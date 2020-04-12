@@ -1,10 +1,10 @@
-using GreenPipes;
-using GreenPipes.Partitioning;
-using MassTransit;
-using MassTransit.QuartzIntegration;
-
 namespace Platform.Quartz
 {
+    using GreenPipes.Partitioning;
+    using MassTransit;
+    using MassTransit.QuartzIntegration;
+
+
     public class QuartzEndpointDefinition :
         IEndpointDefinition<ScheduleMessageConsumer>,
         IEndpointDefinition<CancelScheduledMessageConsumer>
@@ -14,9 +14,11 @@ namespace Platform.Quartz
         public QuartzEndpointDefinition(QuartzOptions options)
         {
             _options = options;
+
+            Partition = new Partitioner(options.ConcurrentMessageLimit, new Murmur3UnsafeHashGenerator());
         }
 
-        public IPartitioner Partition { get; private set; }
+        public IPartitioner Partition { get; }
 
         public virtual bool ConfigureConsumeTopology => true;
 
@@ -34,9 +36,6 @@ namespace Platform.Quartz
         public void Configure<T>(T configurator)
             where T : IReceiveEndpointConfigurator
         {
-            var partitionCount = _options.ConcurrentMessageLimit;
-
-            Partition = configurator.CreatePartitioner(partitionCount);
         }
     }
 }

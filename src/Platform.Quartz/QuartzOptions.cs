@@ -1,12 +1,14 @@
-using System;
-using System.Collections.Specialized;
-
 namespace Platform.Quartz
 {
+    using System;
+    using System.Collections.Specialized;
+
+
     public class QuartzSettings
     {
         public string Name { get; set; }
     }
+
 
     public class QuartzOptions
     {
@@ -28,8 +30,10 @@ namespace Platform.Quartz
             {
                 var connectionString = Environment.GetEnvironmentVariable("MT_Quartz_ConnectionString");
                 if (string.IsNullOrWhiteSpace(connectionString))
+                {
                     connectionString =
                         "Server=tcp:localhost;Database=quartznet;Persist Security Info=False;User ID=sa;Password=Quartz!DockerP4ss;Encrypt=False;TrustServerCertificate=True;";
+                }
 
                 return connectionString;
             }
@@ -47,29 +51,22 @@ namespace Platform.Quartz
             }
         }
 
-        public NameValueCollection Configuration
-        {
-            get
+        public NameValueCollection Configuration =>
+            new NameValueCollection(13)
             {
-                var collection = new NameValueCollection(10)
-                {
-                    {"quartz.scheduler.instanceName", "MassTransit-Scheduler"},
-                    {"quartz.scheduler.instanceId", "AUTO"},
-                    {"quartz.serializer.type", "json"},
-                    {"quartz.threadPool.type", "Quartz.Simpl.SimpleThreadPool, Quartz"},
-                    {"quartz.threadPool.threadCount", "10"},
-                    {"quartz.jobStore.misfireThreshold", "60000"},
-                    {"quartz.jobStore.type", "Quartz.Impl.AdoJobStore.JobStoreTX, Quartz"},
-                    {"quartz.jobStore.driverDelegateType", "Quartz.Impl.AdoJobStore.SqlServerDelegate, Quartz"},
-                    {"quartz.jobStore.tablePrefix", "QRTZ_"},
-                    {"quartz.jobStore.dataSource", "quartzDS"},
-                    {"quartz.dataSource.quartzDS.provider", "SqlServer"},
-                    {"quartz.dataSource.quartzDS.connectionString", ConnectionString},
-                    {"quartz.jobStore.useProperties", "true"}
-                };
-
-                return collection;
-            }
-        }
+                {"quartz.scheduler.instanceName", "MassTransit-Scheduler"},
+                {"quartz.scheduler.instanceId", "AUTO"},
+                {"quartz.serializer.type", "json"},
+                {"quartz.threadPool.type", "Quartz.Simpl.SimpleThreadPool, Quartz"},
+                {"quartz.threadPool.threadCount", "10"},
+                {"quartz.jobStore.misfireThreshold", "60000"},
+                {"quartz.jobStore.type", "Quartz.Impl.AdoJobStore.JobStoreTX, Quartz"},
+                {"quartz.jobStore.driverDelegateType", "Quartz.Impl.AdoJobStore.SqlServerDelegate, Quartz"},
+                {"quartz.jobStore.tablePrefix", "QRTZ_"},
+                {"quartz.jobStore.dataSource", "quartzDS"},
+                {"quartz.dataSource.quartzDS.provider", "SqlServer"},
+                {"quartz.dataSource.quartzDS.connectionString", ConnectionString},
+                {"quartz.jobStore.useProperties", "true"}
+            };
     }
 }

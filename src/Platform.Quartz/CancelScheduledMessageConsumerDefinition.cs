@@ -1,12 +1,13 @@
-using GreenPipes;
-using MassTransit;
-using MassTransit.ConsumeConfigurators;
-using MassTransit.Definition;
-using MassTransit.QuartzIntegration;
-using MassTransit.Scheduling;
-
 namespace Platform.Quartz
 {
+    using GreenPipes;
+    using MassTransit;
+    using MassTransit.ConsumeConfigurators;
+    using MassTransit.Definition;
+    using MassTransit.QuartzIntegration;
+    using MassTransit.Scheduling;
+
+
     public class CancelScheduledMessageConsumerDefinition :
         ConsumerDefinition<CancelScheduledMessageConsumer>
     {
@@ -15,6 +16,8 @@ namespace Platform.Quartz
         public CancelScheduledMessageConsumerDefinition(QuartzEndpointDefinition endpointDefinition)
         {
             _endpointDefinition = endpointDefinition;
+
+            EndpointDefinition = endpointDefinition;
         }
 
         protected override void ConfigureConsumer(IReceiveEndpointConfigurator endpointConfigurator,
