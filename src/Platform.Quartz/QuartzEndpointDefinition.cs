@@ -1,4 +1,4 @@
-namespace Platform.Quartz
+namespace Platform.QuartzService
 {
     using GreenPipes.Partitioning;
     using MassTransit;
@@ -9,13 +9,13 @@ namespace Platform.Quartz
         IEndpointDefinition<ScheduleMessageConsumer>,
         IEndpointDefinition<CancelScheduledMessageConsumer>
     {
-        readonly QuartzOptions _options;
+        readonly QuartzConfiguration _configuration;
 
-        public QuartzEndpointDefinition(QuartzOptions options)
+        public QuartzEndpointDefinition(QuartzConfiguration configuration)
         {
-            _options = options;
+            _configuration = configuration;
 
-            Partition = new Partitioner(options.ConcurrentMessageLimit, new Murmur3UnsafeHashGenerator());
+            Partition = new Partitioner(_configuration.ConcurrentMessageLimit, new Murmur3UnsafeHashGenerator());
         }
 
         public IPartitioner Partition { get; }
@@ -26,11 +26,11 @@ namespace Platform.Quartz
 
         public virtual int? PrefetchCount => default;
 
-        public virtual int? ConcurrentMessageLimit => _options.ConcurrentMessageLimit;
+        public virtual int? ConcurrentMessageLimit => default;
 
         string IEndpointDefinition.GetEndpointName(IEndpointNameFormatter formatter)
         {
-            return _options.QueueName;
+            return _configuration.Queue;
         }
 
         public void Configure<T>(T configurator)

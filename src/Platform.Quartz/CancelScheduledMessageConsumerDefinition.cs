@@ -1,4 +1,4 @@
-namespace Platform.Quartz
+namespace Platform.QuartzService
 {
     using GreenPipes;
     using MassTransit;

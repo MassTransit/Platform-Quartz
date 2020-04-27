@@ -1,12 +1,7 @@
-using IScheduler = Quartz.IScheduler;
-using StdSchedulerFactory = Quartz.Impl.StdSchedulerFactory;
-
-
-namespace Platform.Quartz
+namespace Platform.QuartzService
 {
     using System;
     using MassTransit;
-    using MassTransit.Context;
     using MassTransit.ExtensionsDependencyInjectionIntegration;
     using MassTransit.Platform.Abstractions;
     using MassTransit.QuartzIntegration;
@@ -14,33 +9,36 @@ namespace Platform.Quartz
     using MassTransit.Util;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Diagnostics.HealthChecks;
+    using Microsoft.Extensions.Logging;
+    using Quartz;
+    using Quartz.Impl;
 
 
     public class QuartzPlatformStartup :
         IPlatformStartup
     {
         readonly IConfiguration _configuration;
+        readonly ILogger<QuartzPlatformStartup> _logger;
 
-        public QuartzPlatformStartup(IConfiguration configuration)
+        public QuartzPlatformStartup(IConfiguration configuration, ILogger<QuartzPlatformStartup> logger)
         {
             _configuration = configuration;
+            _logger = logger;
         }
 
         public void ConfigureMassTransit(IServiceCollectionConfigurator configurator, IServiceCollection services)
         {
-            LogContext.Info?.Log("Configuring Quartz");
+            _logger.LogInformation("MassTransit Platform, Quartz Service - Configuring MassTransit");
 
-            services.Configure<QuartzSettings>(_configuration.GetSection("Quartz"));
+            services.Configure<OtherOptions>(_configuration);
+            services.Configure<QuartzOptions>(_configuration.GetSection("Quartz"));
+            services.AddSingleton<QuartzConfiguration>();
 
-            var options = new QuartzOptions();
-
-            services.AddSingleton(options);
             services.AddSingleton(x =>
             {
-                var quartzConfig = x.GetRequiredService<QuartzOptions>();
+                var quartzConfiguration = x.GetRequiredService<QuartzConfiguration>();
 
-                var schedulerFactory = new StdSchedulerFactory(quartzConfig.Configuration);
+                var schedulerFactory = new StdSchedulerFactory(quartzConfiguration.Configuration);
 
                 var scheduler = TaskUtil.Await(() => schedulerFactory.GetScheduler());
 
@@ -51,22 +49,18 @@ namespace Platform.Quartz
 
             configurator.AddConsumer<ScheduleMessageConsumer>(typeof(ScheduleMessageConsumerDefinition));
             configurator.AddConsumer<CancelScheduledMessageConsumer>(typeof(CancelScheduledMessageConsumerDefinition));
-
-            services.AddHealthChecks()
-                .AddSqlServer(options.ConnectionString,
-                    "SELECT 1;",
-                    "sql",
-                    HealthStatus.Degraded,
-                    new[] {"db", "sql", "sqlserver"});
         }
 
         public void ConfigureBus<TEndpointConfigurator>(IBusFactoryConfigurator<TEndpointConfigurator> configurator, IServiceProvider provider)
             where TEndpointConfigurator : IReceiveEndpointConfigurator
         {
             var scheduler = provider.GetRequiredService<IScheduler>();
-            var options = provider.GetRequiredService<QuartzOptions>();
 
-            var schedulerAddress = new Uri($"queue:{options.QueueName}");
+            var options = provider.GetRequiredService<QuartzConfiguration>();
+
+            var schedulerAddress = new Uri($"queue:{options.Queue}");
+
+            _logger.LogInformation("Configuring Quartz: {SchedulerAddress}", schedulerAddress);
 
             configurator.ConnectBusObserver(new SchedulerBusObserver(scheduler, schedulerAddress));
         }

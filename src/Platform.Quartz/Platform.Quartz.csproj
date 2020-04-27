@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
+    <RootNamespace>Platform.QuartzService</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,4 +16,11 @@
     <PackageReference Include="Quartz.Serialization.Json" Version="3.0.7" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.1" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
