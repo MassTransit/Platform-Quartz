@@ -51,12 +51,13 @@ namespace Platform.QuartzService
             configurator.AddConsumer<CancelScheduledMessageConsumer>(typeof(CancelScheduledMessageConsumerDefinition));
         }
 
-        public void ConfigureBus<TEndpointConfigurator>(IBusFactoryConfigurator<TEndpointConfigurator> configurator, IServiceProvider provider)
+        public void ConfigureBus<TEndpointConfigurator>(IBusFactoryConfigurator<TEndpointConfigurator> configurator,
+            IRegistrationContext<IServiceProvider> context)
             where TEndpointConfigurator : IReceiveEndpointConfigurator
         {
-            var scheduler = provider.GetRequiredService<IScheduler>();
+            var scheduler = context.Container.GetRequiredService<IScheduler>();
 
-            var options = provider.GetRequiredService<QuartzConfiguration>();
+            var options = context.Container.GetRequiredService<QuartzConfiguration>();
 
             var schedulerAddress = new Uri($"queue:{options.Queue}");
 
