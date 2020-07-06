@@ -26,7 +26,7 @@ namespace Platform.QuartzService
             _logger = logger;
         }
 
-        public void ConfigureMassTransit(IServiceCollectionConfigurator configurator, IServiceCollection services)
+        public void ConfigureMassTransit(IServiceCollectionBusConfigurator configurator, IServiceCollection services)
         {
             _logger.LogInformation("MassTransit Platform, Quartz Service - Configuring MassTransit");
 
@@ -51,13 +51,12 @@ namespace Platform.QuartzService
             configurator.AddConsumer<CancelScheduledMessageConsumer>(typeof(CancelScheduledMessageConsumerDefinition));
         }
 
-        public void ConfigureBus<TEndpointConfigurator>(IBusFactoryConfigurator<TEndpointConfigurator> configurator,
-            IRegistrationContext<IServiceProvider> context)
+        public void ConfigureBus<TEndpointConfigurator>(IBusFactoryConfigurator<TEndpointConfigurator> configurator, IBusRegistrationContext context)
             where TEndpointConfigurator : IReceiveEndpointConfigurator
         {
-            var scheduler = context.Container.GetRequiredService<IScheduler>();
+            var scheduler = context.GetRequiredService<IScheduler>();
 
-            var options = context.Container.GetRequiredService<QuartzConfiguration>();
+            var options = context.GetRequiredService<QuartzConfiguration>();
 
             var schedulerAddress = new Uri($"queue:{options.Queue}");
 
