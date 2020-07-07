@@ -8,12 +8,8 @@
   <ItemGroup>
     <PackageReference Include="MassTransit.Platform.Abstractions" Version="7.0.0" />
     <PackageReference Include="MassTransit.Quartz" Version="7.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.1.5" />
-    <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="3.1.5" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.5" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.1.5" />
     <PackageReference Include="Quartz.Serialization.Json" Version="3.0.7" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.1" />
   </ItemGroup>
 
 </Project>
