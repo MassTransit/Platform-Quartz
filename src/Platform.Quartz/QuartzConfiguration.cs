@@ -48,10 +48,10 @@ namespace Platform.QuartzService
                     {"quartz.jobStore.type", "Quartz.Impl.AdoJobStore.JobStoreTX, Quartz"},
                     {"quartz.jobStore.driverDelegateType", "Quartz.Impl.AdoJobStore.SqlServerDelegate, Quartz"},
                     {"quartz.jobStore.tablePrefix", _options.Value.TablePrefix ?? "QRTZ_"},
-                    {"quartz.jobStore.dataSource", "quartzDS"},
-                    {"quartz.dataSource.quartzDS.provider", _options.Value.Provider ?? "SqlServer"},
+                    {"quartz.jobStore.dataSource", "default"},
+                    {"quartz.dataSource.default.provider", _options.Value.Provider ?? "SqlServer"},
                     {
-                        "quartz.dataSource.quartzDS.connectionString", _options.Value.ConnectionString ??
+                        "quartz.dataSource.default.connectionString", _options.Value.ConnectionString ??
                         "Server=tcp:localhost;Database=quartznet;Persist Security Info=False;User ID=sa;Password=Quartz!DockerP4ss;Encrypt=False;TrustServerCertificate=True;"
                     },
                     {"quartz.jobStore.useProperties", "true"}
