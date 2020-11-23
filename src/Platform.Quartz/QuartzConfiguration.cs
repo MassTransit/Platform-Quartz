@@ -41,6 +41,7 @@ namespace Platform.QuartzService
                 {
                     {"quartz.scheduler.instanceName", _options.Value.InstanceName ?? "MassTransit-Scheduler"},
                     {"quartz.scheduler.instanceId", "AUTO"},
+                    {"quartz.plugin.timeZoneConverter.type","Quartz.Plugin.TimeZoneConverter.TimeZoneConverterPlugin, Quartz.Plugins.TimeZoneConverter"},
                     {"quartz.serializer.type", "json"},
                     {"quartz.threadPool.type", "Quartz.Simpl.SimpleThreadPool, Quartz"},
                     {"quartz.threadPool.threadCount", (_options.Value.ThreadCount ?? 10).ToString("F0")},
