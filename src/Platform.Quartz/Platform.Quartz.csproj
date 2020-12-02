@@ -8,10 +8,10 @@
   <ItemGroup>
     <PackageReference Include="MassTransit.Platform.Abstractions" Version="7.0.7" />
     <PackageReference Include="MassTransit.Quartz" Version="7.0.7" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="2.1.0" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.1.10" />
     <PackageReference Include="Quartz.Serialization.Json" Version="3.2.3" />
     <PackageReference Include="Quartz.Plugins.TimeZoneConverter" Version="3.2.3" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.5.1" />
 
   </ItemGroup>
 
