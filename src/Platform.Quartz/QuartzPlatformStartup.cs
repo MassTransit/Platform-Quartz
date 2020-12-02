@@ -6,11 +6,9 @@ namespace Platform.QuartzService
     using MassTransit.Platform.Abstractions;
     using MassTransit.QuartzIntegration;
     using MassTransit.QuartzIntegration.Configuration;
-    using MassTransit.Util;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
-    using Quartz;
     using Quartz.Impl;
 
 
@@ -34,17 +32,6 @@ namespace Platform.QuartzService
             services.Configure<QuartzOptions>(_configuration.GetSection("Quartz"));
             services.AddSingleton<QuartzConfiguration>();
 
-            services.AddSingleton(x =>
-            {
-                var quartzConfiguration = x.GetRequiredService<QuartzConfiguration>();
-
-                var schedulerFactory = new StdSchedulerFactory(quartzConfiguration.Configuration);
-
-                var scheduler = TaskUtil.Await(() => schedulerFactory.GetScheduler());
-
-                return scheduler;
-            });
-
             services.AddSingleton<QuartzEndpointDefinition>();
 
             configurator.AddConsumer<ScheduleMessageConsumer>(typeof(ScheduleMessageConsumerDefinition));
@@ -54,15 +41,19 @@ namespace Platform.QuartzService
         public void ConfigureBus<TEndpointConfigurator>(IBusFactoryConfigurator<TEndpointConfigurator> configurator, IBusRegistrationContext context)
             where TEndpointConfigurator : IReceiveEndpointConfigurator
         {
-            var scheduler = context.GetRequiredService<IScheduler>();
-
             var options = context.GetRequiredService<QuartzConfiguration>();
 
             var schedulerAddress = new Uri($"queue:{options.Queue}");
 
             _logger.LogInformation("Configuring Quartz: {SchedulerAddress}", schedulerAddress);
 
-            configurator.ConnectBusObserver(new SchedulerBusObserver(scheduler, schedulerAddress));
+            var schedulerOptions = new InMemorySchedulerOptions
+            {
+                SchedulerFactory = new StdSchedulerFactory(options.Configuration),
+                QueueName = options.Queue
+            };
+
+            configurator.ConnectBusObserver(new SchedulerBusObserver(schedulerOptions));
         }
     }
 }
