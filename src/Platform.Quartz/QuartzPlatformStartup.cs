@@ -32,6 +32,19 @@ namespace Platform.QuartzService
             services.Configure<QuartzOptions>(_configuration.GetSection("Quartz"));
             services.AddSingleton<QuartzConfiguration>();
 
+            services.AddSingleton(provider =>
+            {
+                var options = provider.GetRequiredService<QuartzConfiguration>();
+
+                return new InMemorySchedulerOptions
+                {
+                    SchedulerFactory = new StdSchedulerFactory(options.Configuration),
+                    QueueName = options.Queue
+                };
+            });
+            services.AddSingleton<SchedulerBusObserver>();
+            services.AddSingleton(provider => provider.GetRequiredService<SchedulerBusObserver>().Scheduler);
+
             services.AddSingleton<QuartzEndpointDefinition>();
 
             configurator.AddConsumer<ScheduleMessageConsumer>(typeof(ScheduleMessageConsumerDefinition));
@@ -47,13 +60,7 @@ namespace Platform.QuartzService
 
             _logger.LogInformation("Configuring Quartz: {SchedulerAddress}", schedulerAddress);
 
-            var schedulerOptions = new InMemorySchedulerOptions
-            {
-                SchedulerFactory = new StdSchedulerFactory(options.Configuration),
-                QueueName = options.Queue
-            };
-
-            configurator.ConnectBusObserver(new SchedulerBusObserver(schedulerOptions));
+            configurator.ConnectBusObserver(context.GetRequiredService<SchedulerBusObserver>());
         }
     }
 }
