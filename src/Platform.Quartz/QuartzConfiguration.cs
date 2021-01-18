@@ -50,6 +50,7 @@ namespace Platform.QuartzService
                     {"quartz.jobStore.driverDelegateType", "Quartz.Impl.AdoJobStore.SqlServerDelegate, Quartz"},
                     {"quartz.jobStore.tablePrefix", _options.Value.TablePrefix ?? "QRTZ_"},
                     {"quartz.jobStore.dataSource", "default"},
+                    {"quartz.jobStore.clustered", $"{_options.Value.Clustered ?? true}"},
                     {"quartz.dataSource.default.provider", _options.Value.Provider ?? "SqlServer"},
                     {
                         "quartz.dataSource.default.connectionString", _options.Value.ConnectionString ??

@@ -9,5 +9,6 @@ namespace Platform.QuartzService
         public int? ThreadCount { get; set; }
         public string InstanceName { get; set; }
         public string TablePrefix { get; set; }
+        public bool? Clustered { get; set; }
     }
 }
