@@ -47,7 +47,7 @@ namespace Platform.QuartzService
                     {"quartz.threadPool.threadCount", (_options.Value.ThreadCount ?? 10).ToString("F0")},
                     {"quartz.jobStore.misfireThreshold", "60000"},
                     {"quartz.jobStore.type", "Quartz.Impl.AdoJobStore.JobStoreTX, Quartz"},
-                    {"quartz.jobStore.driverDelegateType", "Quartz.Impl.AdoJobStore.SqlServerDelegate, Quartz"},
+                    {"quartz.jobStore.driverDelegateType", _options.Value.DriverDelegateType ?? "Quartz.Impl.AdoJobStore.SqlServerDelegate, Quartz"},
                     {"quartz.jobStore.tablePrefix", _options.Value.TablePrefix ?? "QRTZ_"},
                     {"quartz.jobStore.dataSource", "default"},
                     {"quartz.jobStore.clustered", $"{_options.Value.Clustered ?? true}"},

@@ -10,5 +10,6 @@ namespace Platform.QuartzService
         public string InstanceName { get; set; }
         public string TablePrefix { get; set; }
         public bool? Clustered { get; set; }
+        public string DriverDelegateType { get; set; }
     }
 }
