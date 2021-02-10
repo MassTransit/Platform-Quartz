@@ -1,13 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>Platform.QuartzService</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MassTransit.Platform.Abstractions" Version="7.1.4" />
-    <PackageReference Include="MassTransit.Quartz" Version="7.1.5-develop.3273" />
+    <PackageReference Include="MassTransit.Platform.Abstractions" Version="7.1.5" />
+    <PackageReference Include="MassTransit.Quartz" Version="7.1.5" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.1.11" />
     <PackageReference Include="Npgsql" Version="5.0.3" />
