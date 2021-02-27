@@ -24,9 +24,9 @@ namespace Platform.QuartzService
 
         public virtual bool IsTemporary => false;
 
-        public virtual int? PrefetchCount => default;
+        public virtual int? PrefetchCount => _configuration.ConcurrentMessageLimit;
 
-        public virtual int? ConcurrentMessageLimit => default;
+        public virtual int? ConcurrentMessageLimit => _configuration.ConcurrentMessageLimit;
 
         string IEndpointDefinition.GetEndpointName(IEndpointNameFormatter formatter)
         {
