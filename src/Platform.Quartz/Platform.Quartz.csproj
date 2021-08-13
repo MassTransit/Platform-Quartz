@@ -6,8 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MassTransit.Platform.Abstractions" Version="7.2.1" />
-    <PackageReference Include="MassTransit.Quartz" Version="7.2.1" />
+    <PackageReference Include="MassTransit.Platform.Abstractions" Version="7.2.2" />
+    <PackageReference Include="MassTransit.Quartz" Version="7.2.2" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.1.11" />
     <PackageReference Include="Npgsql" Version="5.0.3" />
