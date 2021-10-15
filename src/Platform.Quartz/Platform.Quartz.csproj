@@ -6,14 +6,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MassTransit.Platform.Abstractions" Version="7.2.2" />
-    <PackageReference Include="MassTransit.Quartz" Version="7.2.2" />
+    <PackageReference Include="MassTransit.Platform.Abstractions" Version="7.2.3" />
+    <PackageReference Include="MassTransit.Quartz" Version="7.2.3" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="2.1.1" />
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.1.11" />
-    <PackageReference Include="Npgsql" Version="5.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.1.18" />
+    <PackageReference Include="Npgsql" Version="5.0.10" />
     <PackageReference Include="Quartz.Serialization.Json" Version="3.3.2" />
     <PackageReference Include="Quartz.Plugins.TimeZoneConverter" Version="3.3.2" />
-    <PackageReference Include="MySql.Data" Version="8.0.23" />
+    <PackageReference Include="MySql.Data" Version="8.0.26" />
 
   </ItemGroup>
 
